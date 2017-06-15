@@ -38,8 +38,6 @@ public class ActionTable : Dictionary<string, double>
 
 public class QTable : Dictionary<string, ActionTable> { }
 
-
-//Dictionary<string, Dictionary<string, int>>;
 class QAgent
 {
 
@@ -82,7 +80,7 @@ class QAgent
     void UpdateQTable(double reward, string currentState)
     {
         double oldQ = mQTable[mPrevState][mPrevAction];
-        double newQ = oldQ + alpha * (reward + gamma * GetActionTableMaxQ(mQTable[currentState]) - GetActionTableMaxQ(mQTable[mPrevState]));
+        double newQ = oldQ + alpha * (reward + gamma * GetActionTableMaxQ(mQTable[currentState]) - mQTable[mPrevState][mPrevAction]);
         mQTable[mPrevState][mPrevAction] = newQ;
     }
 
@@ -92,8 +90,7 @@ class QAgent
         double newQ = oldQ + alpha * (reward);
         mQTable[mCurrentState][mPrevAction] = newQ;
     }
-
-
+    
     class PosData
     {
         private string xPos = "";
@@ -108,9 +105,9 @@ class QAgent
     public void Act(WorldState worldState, AgentHost agentHost, double reward)
     {
         TimestampedString observationInfo = worldState.observations[worldState.observations.Count - 1];
-        PosData posdData = JsonConvert.DeserializeObject<PosData>(observationInfo.text);
+        PosData posData = JsonConvert.DeserializeObject<PosData>(observationInfo.text);
 
-        mCurrentState = posdData.XPos + ":" + posdData.ZPos;
+        mCurrentState = posData.XPos + ":" + posData.ZPos;
         
         if (!mQTable.ContainsKey(mCurrentState))
         {
@@ -124,8 +121,8 @@ class QAgent
         }
 
         string action = "";
-        //If action decision smaller then epsilon, do random action for exploration.
 
+        //If action decision smaller than epsilon, do random action for exploration.
         Random random = new Random();
         double actionDecisionValue = random.NextDouble();
         if (actionDecisionValue < epsilon)
@@ -137,9 +134,7 @@ class QAgent
         {
             ActionTable currentActionTable = mQTable[mCurrentState];
 
-            double maxQ = GetActionTableMaxQ(currentActionTable);
             double max = double.MinValue;
-
             foreach (var element in currentActionTable)
             {
                 if (max < element.Value)
@@ -252,8 +247,6 @@ class QAgent
                     }
                 }
             }
-
-            Console.WriteLine("Reward : " + currentReward);
         }
 
         if (mPrevAction != null && mPrevState != null)
@@ -288,7 +281,7 @@ class Program
         }
 
         XmlDocument doc = new XmlDocument();
-        doc.Load("tutorial_6.xml");
+        doc.Load("q_learning_problem.xml");
         MissionSpec mission = new MissionSpec(doc.OuterXml, true);
         mission.requestVideo(320, 240);
         mission.setViewpoint(1);
