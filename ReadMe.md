@@ -31,3 +31,4 @@ Malmo 플랫폼에서 지원하는 마인크래프트 클라이언트가 필요�
 
 소스 코드는 [링크](https://github.com/zenoengine/QLearning-Minecraft-Malmo)에서 받으 실 수 있습니다.
 
+Windows에서 설치하는 방법은 다음과 같습니다. [Tutorial KR](https://github.com/zenoengine/til/blob/master/AI/Malmo_getting_startl.md)
