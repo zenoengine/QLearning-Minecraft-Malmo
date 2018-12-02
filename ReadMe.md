@@ -2,7 +2,7 @@
 
 Q-Learning algrorithm with minecraft malmo project
 
-|before leanring | Learning|
+|Before Learning | Learning|
 |---|---|
 |![beforeLearning](./Markdown/BeforeLearning.gif)|![Learning](./Markdown/AfterLearning.gif)|
 
